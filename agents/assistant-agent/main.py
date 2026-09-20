@@ -81,9 +81,15 @@ class AssistantExecutor(AgentExecutor):
                 agents = []
                 results = []
 
-            full_response = ""
-            async for chunk in self._synthesize(query, results):
-                full_response += chunk
+            if query.startswith("GROW_CAMPAIGN:"):
+                full_response = json.dumps({
+                    "type": "grower_campaign",
+                    "stages": results,
+                }, ensure_ascii=False)
+            else:
+                full_response = ""
+                async for chunk in self._synthesize(query, results):
+                    full_response += chunk
 
             await event_queue.enqueue_event(
                 new_text_artifact_update_event(
