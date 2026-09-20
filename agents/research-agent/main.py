@@ -47,7 +47,7 @@ EVIDENCE:
     async def cancel(self,context,q): pass
 @click.command()
 @click.option("--host",default="0.0.0.0")
-@click.option("--port",default=int(os.getenv("PORT","8000")),type=int)
+@click.option("--port",default=int(os.getenv("PORT","8001")),type=int)
 def main(host,port):
     llm=AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"),base_url=os.getenv("OPENAI_BASE_URL")); model=os.getenv("MODEL","deepseek-v4-flash")
     card=AgentCard(name="grower-research-agent",description="Researches a business, market, competitors, customers and observable buying signals with Anakin.",supported_interfaces=[AgentInterface(protocol_binding="JSONRPC",url="http://"+host+":"+str(port)+"/")],version="1.0.0",default_input_modes=["text/plain"],default_output_modes=["text/plain"],capabilities=AgentCapabilities(streaming=True),skills=[AgentSkill(id="market-research",name="Market Research",description="Grounded GTM research from a website or business idea.",tags=["grower","gtm","research","anakin"],examples=["Research my product"])])
